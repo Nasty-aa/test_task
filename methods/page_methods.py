@@ -1,9 +1,12 @@
 from selenium.webdriver.common.by import By
+import logging
+from elements.base_page import BasePage
 
 
-class MethodsPage:
+class MethodsPage(BasePage):
+    """Класс для работы с блоками"""
 
-    def search_block(self, css, name_block, scroll=True):
+    def search_block(self, driver, css: str, name_block: str, scroll=True):
         """
             Метод для поиска элемента на странице
             css - Класс по которому нужно искать
@@ -11,9 +14,9 @@ class MethodsPage:
             scroll - Нужно ли скроллить до элемента (по умолчанию True)
         """
 
-        block = self.find_element(By.CSS_SELECTOR, css)
-        print('Проверяем отображение элемента')
-        assert block.is_displayed(), name_block + 'Не отображается'
+        block = driver.find_element(By.CSS_SELECTOR, css)
+        logging.info('Проверяем отображение элемента')
+        assert block.is_displayed(), f'{name_block}Не отображается'
         if scroll:
-            print('Скроллим страницу до элемента')
-            self.execute_script("return arguments[0].scrollIntoView(true);", block)
+            logging.info('Скроллим страницу до элемента')
+            driver.execute_script("return arguments[0].scrollIntoView(true);", block)
